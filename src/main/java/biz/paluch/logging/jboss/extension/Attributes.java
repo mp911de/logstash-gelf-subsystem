@@ -13,9 +13,6 @@ import biz.paluch.logging.gelf.intern.sender.DefaultGelfSenderProvider;
  * @since 29.07.14 21:08
  */
 public class Attributes {
-    protected static final SimpleAttributeDefinition NAME = new SimpleAttributeDefinitionBuilder(ModelConstants.NAME,
-            ModelType.STRING).setAllowExpression(false).setXmlName(ModelConstants.NAME)
-            .setFlags(AttributeAccess.Flag.RESTART_ALL_SERVICES).setAllowNull(false).build();
 
     protected static final SimpleAttributeDefinition HOST = new SimpleAttributeDefinitionBuilder(ModelConstants.HOST,
             ModelType.STRING).setAllowExpression(true).setXmlName(ModelConstants.HOST)

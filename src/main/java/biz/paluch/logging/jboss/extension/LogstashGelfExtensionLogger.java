@@ -1,15 +1,19 @@
 package biz.paluch.logging.jboss.extension;
 
-import org.jboss.logging.*;
+import org.jboss.logging.BasicLogger;
+import org.jboss.logging.LogMessage;
+import org.jboss.logging.Logger;
+import org.jboss.logging.Message;
+import org.jboss.logging.MessageLogger;
 
 @MessageLogger(projectCode = "LSGELF")
-interface LogstashGelfExtensionLogger extends BasicLogger {
+public interface LogstashGelfExtensionLogger extends BasicLogger {
 
     /**
      * A logger with a category of the package name.
      */
     LogstashGelfExtensionLogger ROOT_LOGGER = Logger.getMessageLogger(LogstashGelfExtensionLogger.class,
-            "biz.paluch.logging.jboss.extension");
+            LogstashGelfExtensionLogger.class.getPackage().getName());
 
     /**
      * Logs an info message indicating an item was bound into JNDI.

@@ -4,23 +4,24 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP_ADDR;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUBSYSTEM;
-import org.jboss.as.controller.*;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.jboss.as.controller.Extension;
+import org.jboss.as.controller.ExtensionContext;
+import org.jboss.as.controller.PathElement;
+import org.jboss.as.controller.SubsystemRegistration;
+import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.as.controller.descriptions.StandardResourceDescriptionResolver;
 import org.jboss.as.controller.parsing.ExtensionParsingContext;
 import org.jboss.as.controller.parsing.ParseUtils;
-import org.jboss.as.controller.persistence.SubsystemMarshallingContext;
 import org.jboss.as.controller.registry.ManagementResourceRegistration;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.ServiceName;
-import org.jboss.staxmapper.XMLElementReader;
-import org.jboss.staxmapper.XMLElementWriter;
 import org.jboss.staxmapper.XMLExtendedStreamReader;
-import org.jboss.staxmapper.XMLExtendedStreamWriter;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
@@ -61,74 +62,22 @@ public class SubsystemExtension implements Extension {
         subsystem.registerXMLElementWriter(parser);
     }
 
-    private static ModelNode createAddSubsystemOperation() {
+    public static ModelNode createSubsystemAddress() {
+        final ModelNode address = new ModelNode();
+        address.add(ModelDescriptionConstants.SUBSYSTEM, ModelConstants.SUBSYSTEM_NAME);
+        address.protect();
+        return address;
+    }
+
+    public static ModelNode createAddSubsystemOperation(ModelNode address) {
         final ModelNode subsystem = new ModelNode();
         subsystem.get(OP).set(ADD);
-        subsystem.get(OP_ADDR).add(SUBSYSTEM, ModelConstants.SUBSYSTEM_NAME);
+        subsystem.get(OP_ADDR).set(address);
         return subsystem;
     }
 
-    /**
-     * The subsystem parser, which uses stax to read and write to and from xml
-     */
-    private static class SubsystemParser implements XMLStreamConstants, XMLElementReader<List<ModelNode>>,
-            XMLElementWriter<SubsystemMarshallingContext> {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void writeContent(XMLExtendedStreamWriter writer, SubsystemMarshallingContext context) throws XMLStreamException {
-            context.startSubsystemElement(ModelConstants.NAMESPACE, false);
-            writer.writeEndElement();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void readElement(XMLExtendedStreamReader reader, List<ModelNode> list) throws XMLStreamException {
-            // Require no content
-
-            final PathAddress address = PathAddress.pathAddress(SUBSYSTEM_PATH);
-
-            list.add(createAddSubsystemOperation());
-
-            while (reader.hasNext() && reader.nextTag() != END_ELEMENT) {
-                switch (Namespace.forUri(reader.getNamespaceURI())) {
-                    case LOGSTASH_GELF_1_0: {
-                        final Element element = Element.forName(reader.getLocalName());
-                        switch (element) {
-                            case DATENPUMPE: {
-                                prepareDatenpumpe(reader, list, address);
-                                ParseUtils.requireNoContent(reader);
-                                break;
-                            }
-
-                            case SENDER: {
-                                ParseUtils.requireNoContent(reader);
-                                break;
-                            }
-                            default: {
-                                reader.handleAny(list);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    default:
-                        throw ParseUtils.unexpectedElement(reader);
-                }
-            }
-        }
-
-    }
-
-    private static void prepareDatenpumpe(final XMLExtendedStreamReader reader, List<ModelNode> list, final PathAddress parent)
+    public static void prepareDatenpumpe(final XMLExtendedStreamReader reader, List<ModelNode> list, ModelNode parent)
             throws XMLStreamException {
-        String name = null;
-        String host = null;
-        int port;
         String jndiName = null;
         final ModelNode operation = new ModelNode();
 
@@ -136,15 +85,10 @@ public class SubsystemExtension implements Extension {
 
             String value = reader.getAttributeValue(i);
             String attributeName = reader.getAttributeLocalName(i);
-            if (attributeName.equals(ModelConstants.NAME)) {
-                name = value;
-                Attributes.NAME.parseAndSetParameter(value, operation, reader);
-            } else if (attributeName.equals(ModelConstants.HOST)) {
+            if (attributeName.equals(ModelConstants.HOST)) {
                 Attributes.HOST.parseAndSetParameter(value, operation, reader);
-                host = value;
             } else if (attributeName.equals(ModelConstants.PORT)) {
                 Attributes.PORT.parseAndSetParameter(value, operation, reader);
-                port = Integer.parseInt(value);
             } else if (attributeName.equals(ModelConstants.JNDI_NAME)) {
                 Attributes.JNDI_NAME.parseAndSetParameter(value, operation, reader);
                 jndiName = value;
@@ -153,18 +97,17 @@ public class SubsystemExtension implements Extension {
             }
         }
 
-        if (name == null) {
-            throw ParseUtils.missingRequired(reader, Collections.singleton(ModelConstants.NAME));
-        }
-
         if (jndiName == null) {
             throw ParseUtils.missingRequired(reader, Collections.singleton(ModelConstants.JNDI_NAME));
         }
 
-        final PathAddress address = parent.append(PathElement.pathElement(ModelConstants.DATENPUMPE, name));
+        final ModelNode dsAddress = parent.clone();
+        dsAddress.add(ModelConstants.DATENPUMPE, jndiName);
+        dsAddress.protect();
 
-        operation.get(OP_ADDR).set(address.toModelNode());
+        operation.get(OP_ADDR).set(dsAddress);
         operation.get(OP).set(ADD);
+
         list.add(operation);
 
     }

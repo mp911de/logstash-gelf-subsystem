@@ -18,10 +18,9 @@
     </xs:complexType>
 
     <xs:complexType name="gelfSenderType">
-        <xs:attribute name="name" use="required" type="xs:string" />
+        <xs:attribute name="jndi-name" use="required" type="xs:string" />
         <xs:attribute name="host" use="required" type="xs:string" />
         <xs:attribute name="port" use="optional" type="xs:int" />
-        <xs:attribute name="jndi-name" use="required" type="xs:string" />
     </xs:complexType>
 
 

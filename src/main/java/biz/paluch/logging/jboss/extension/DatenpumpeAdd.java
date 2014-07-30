@@ -1,7 +1,14 @@
 package biz.paluch.logging.jboss.extension;
 
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP_ADDR;
-import org.jboss.as.controller.*;
+
+import java.util.List;
+
+import org.jboss.as.controller.AbstractAddStepHandler;
+import org.jboss.as.controller.OperationContext;
+import org.jboss.as.controller.OperationFailedException;
+import org.jboss.as.controller.PathAddress;
+import org.jboss.as.controller.ServiceVerificationHandler;
 import org.jboss.as.controller.registry.Resource;
 import org.jboss.as.naming.ServiceBasedNamingStore;
 import org.jboss.as.naming.deployment.ContextNames;
@@ -11,8 +18,6 @@ import org.jboss.msc.service.AbstractServiceListener;
 import org.jboss.msc.service.ServiceBuilder;
 import org.jboss.msc.service.ServiceController;
 import org.jboss.msc.service.ServiceTarget;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -24,13 +29,10 @@ public class DatenpumpeAdd extends AbstractAddStepHandler {
     @Override
     protected void populateModel(ModelNode operation, ModelNode model) throws OperationFailedException {
         Attributes.HOST.validateAndSet(operation, model);
-        Attributes.NAME.validateAndSet(operation, model);
         Attributes.JNDI_NAME.validateAndSet(operation, model);
-
         if (operation.hasDefined(Attributes.PORT.getName())) {
             Attributes.PORT.validateAndSet(operation, model);
         }
-
     }
 
     @Override
@@ -41,7 +43,6 @@ public class DatenpumpeAdd extends AbstractAddStepHandler {
         final PathAddress address = PathAddress.pathAddress(operation.get(OP_ADDR));
         ModelNode fullTree = Resource.Tools.readModel(context.readResource(PathAddress.EMPTY_ADDRESS));
         installRuntimeServices(context, address, fullTree, verificationHandler, controllers);
-
     }
 
     public static String getJndiName(final String rawJndiName) {
@@ -59,8 +60,8 @@ public class DatenpumpeAdd extends AbstractAddStepHandler {
             throws OperationFailedException {
 
         final ServiceTarget serviceTarget = context.getServiceTarget();
-
-        final GelfSenderServiceConfiguration configuration = getGelfSenderServiceConfiguration(context, model);
+        final GelfSenderServiceConfiguration configuration = getGelfSenderServiceConfiguration(context, address
+                .getLastElement().getValue(), model);
 
         DatenpumpeManagedReferenceFactory factory = new DatenpumpeManagedReferenceFactory(configuration);
         ContextNames.BindInfo bindInfo = ContextNames.bindInfoFor(configuration.getJndiName());
@@ -95,15 +96,13 @@ public class DatenpumpeAdd extends AbstractAddStepHandler {
 
     }
 
-    private static GelfSenderServiceConfiguration getGelfSenderServiceConfiguration(OperationContext context, ModelNode model)
-            throws OperationFailedException {
-        String name = Attributes.NAME.resolveModelAttribute(context, model).asString();
+    private static GelfSenderServiceConfiguration getGelfSenderServiceConfiguration(OperationContext context, String name,
+            ModelNode model) throws OperationFailedException {
         String host = Attributes.HOST.resolveModelAttribute(context, model).asString();
         int port = Attributes.PORT.resolveModelAttribute(context, model).asInt();
         String jndiName = getJndiName(model, context);
 
         GelfSenderServiceConfiguration configuration = new GelfSenderServiceConfiguration();
-        configuration.setName(name);
         configuration.setHost(host);
         configuration.setPort(port);
         configuration.setJndiName(jndiName);

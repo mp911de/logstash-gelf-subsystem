@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 enum Element {
-    UNKNOWN(null),
+    UNKNOWN(null), DATENPUMPE(ModelConstants.DATENPUMPE), SENDER(ModelConstants.SENDER);
 
-    DATENPUMPE(ModelConstants.DATENPUMPE), SENDER(ModelConstants.SENDER);
     private final String name;
 
     Element(final String name) {

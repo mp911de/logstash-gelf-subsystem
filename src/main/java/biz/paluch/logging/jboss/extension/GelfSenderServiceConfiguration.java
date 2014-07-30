@@ -5,18 +5,9 @@ package biz.paluch.logging.jboss.extension;
  * @since 30.07.14 08:31
  */
 public class GelfSenderServiceConfiguration {
-    private String name;
     private String host;
     private int port;
     private String jndiName;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getHost() {
         return host;

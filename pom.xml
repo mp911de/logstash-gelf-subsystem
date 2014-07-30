@@ -153,7 +153,12 @@
             <artifactId>jboss-as-naming</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jboss.as</groupId>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-processor</artifactId>
+            <version>1.2.0.Final</version>
+        </dependency>
+        <dependency>
+        <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-subsystem-test</artifactId>
             <scope>test</scope>
         </dependency>
