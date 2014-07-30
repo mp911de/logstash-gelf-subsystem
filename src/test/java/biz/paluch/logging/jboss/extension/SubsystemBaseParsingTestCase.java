@@ -13,13 +13,13 @@ import java.io.IOException;
 public class SubsystemBaseParsingTestCase extends AbstractSubsystemBaseTest {
 
     public SubsystemBaseParsingTestCase() {
-        super(SubsystemExtension.SUBSYSTEM_NAME, new SubsystemExtension());
+        super(ModelConstants.SUBSYSTEM_NAME, new SubsystemExtension());
     }
 
 
     @Override
     protected String getSubsystemXml() throws IOException {
-        return "<subsystem xmlns=\"" + SubsystemExtension.NAMESPACE + "\">" +
+        return "<subsystem xmlns=\"" + ModelConstants.NAMESPACE + "\">" +
                 "</subsystem>";
     }
 

@@ -6,6 +6,7 @@ import org.jboss.as.controller.OperationFailedException;
 import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.dmr.ModelNode;
+import org.jboss.msc.service.ServiceName;
 
 /**
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
@@ -21,8 +22,8 @@ public class DatenpumpeRemove extends AbstractRemoveStepHandler {
     protected void performRuntime(OperationContext context, ModelNode operation, ModelNode model)
             throws OperationFailedException {
         String suffix = PathAddress.pathAddress(operation.get(ModelDescriptionConstants.ADDRESS)).getLastElement().getValue();
-        /*
-         * ServiceName name = TrackerService.createServiceName(suffix); context.removeService(name);
-         */
+
+        ServiceName name = SubsystemExtension.SERVICE_NAME.append(suffix);
+        context.removeService(name);
     }
 }
