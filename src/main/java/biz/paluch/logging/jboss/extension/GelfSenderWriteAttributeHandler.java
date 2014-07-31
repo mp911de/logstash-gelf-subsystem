@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 30.07.14 08:50
  */
-public class DatenpumpeWriteAttributeHandler extends RestartParentWriteAttributeHandler {
-    DatenpumpeWriteAttributeHandler(AttributeDefinition... attributeDefinitions) {
-        super(ModelConstants.DATENPUMPE, attributeDefinitions);
+public class GelfSenderWriteAttributeHandler extends RestartParentWriteAttributeHandler {
+    GelfSenderWriteAttributeHandler(AttributeDefinition... attributeDefinitions) {
+        super(ModelConstants.SENDER, attributeDefinitions);
     }
 
     @Override
     protected void recreateParentService(OperationContext context, PathAddress parentAddress, ModelNode parentModel,
             ServiceVerificationHandler verificationHandler) throws OperationFailedException {
-        DatenpumpeAdd.installRuntimeServices(context, parentAddress, parentModel, verificationHandler,
+        GelfSenderAdd.installRuntimeServices(context, parentAddress, parentModel, verificationHandler,
                 new ArrayList<ServiceController<?>>());
     }
 

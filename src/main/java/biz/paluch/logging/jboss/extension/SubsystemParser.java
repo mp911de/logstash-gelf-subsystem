@@ -1,10 +1,5 @@
 package biz.paluch.logging.jboss.extension;
 
-import java.util.List;
-
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
 import org.jboss.as.controller.parsing.ParseUtils;
 import org.jboss.as.controller.persistence.SubsystemMarshallingContext;
 import org.jboss.dmr.ModelNode;
@@ -13,6 +8,10 @@ import org.jboss.staxmapper.XMLElementReader;
 import org.jboss.staxmapper.XMLElementWriter;
 import org.jboss.staxmapper.XMLExtendedStreamReader;
 import org.jboss.staxmapper.XMLExtendedStreamWriter;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.util.List;
 
 /**
  * The subsystem parser, which uses stax to read and write to and from xml
@@ -34,7 +33,7 @@ class SubsystemParser implements XMLStreamConstants, XMLElementReader<List<Model
 
             for (Property datenpumpe : datenpumpen) {
                 ModelNode node = datenpumpe.getValue();
-                writeNode(writer, node);
+                writeNode(writer, node, Element.DATENPUMPE);
             }
         }
 
@@ -43,14 +42,14 @@ class SubsystemParser implements XMLStreamConstants, XMLElementReader<List<Model
 
             for (Property gelfSender : gelfSenders) {
                 ModelNode node = gelfSender.getValue();
-                writeNode(writer, node);
+                writeNode(writer, node, Element.SENDER);
             }
         }
         writer.writeEndElement();
     }
 
-    private void writeNode(XMLExtendedStreamWriter writer, ModelNode node) throws XMLStreamException {
-        writer.writeStartElement(Element.DATENPUMPE.getLocalName());
+    private void writeNode(XMLExtendedStreamWriter writer, ModelNode node, Element element) throws XMLStreamException {
+        writer.writeStartElement(element.getLocalName());
 
         Attributes.JNDI_NAME.marshallAsAttribute(node, writer);
         Attributes.HOST.marshallAsAttribute(node, writer);
@@ -75,12 +74,13 @@ class SubsystemParser implements XMLStreamConstants, XMLElementReader<List<Model
                     final Element element = Element.forName(reader.getLocalName());
                     switch (element) {
                         case DATENPUMPE: {
-                            SubsystemExtension.prepareDatenpumpe(reader, list, subsystemAddress);
+                            SubsystemExtension.prepareOperation(ModelConstants.DATENPUMPE, reader, list, subsystemAddress);
                             ParseUtils.requireNoContent(reader);
                             break;
                         }
 
                         case SENDER: {
+                            SubsystemExtension.prepareOperation(ModelConstants.SENDER, reader, list, subsystemAddress);
                             ParseUtils.requireNoContent(reader);
                             break;
                         }

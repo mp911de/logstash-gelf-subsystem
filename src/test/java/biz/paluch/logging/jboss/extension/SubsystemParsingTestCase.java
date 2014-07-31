@@ -1,21 +1,15 @@
 package biz.paluch.logging.jboss.extension;
 
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.DESCRIBE;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP_ADDR;
-import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUBSYSTEM;
-
-import java.util.List;
-
+import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.*;
 import junit.framework.Assert;
-
 import org.jboss.as.controller.PathAddress;
 import org.jboss.as.controller.PathElement;
 import org.jboss.as.subsystem.test.AbstractSubsystemTest;
 import org.jboss.as.subsystem.test.KernelServices;
 import org.jboss.dmr.ModelNode;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Tests all management expects for subsystem, parsing, marshaling, model definition and other Here is an example that allows
@@ -27,9 +21,10 @@ import org.junit.Test;
  */
 public class SubsystemParsingTestCase extends AbstractSubsystemTest {
 
-    public static final String SUBSYSTEM_XML_ONLY = "<subsystem xmlns=\"" + ModelConstants.NAMESPACE + "\">" + "</subsystem>";
+    public static final String SUBSYSTEM_XML_ONLY = "<subsystem xmlns=\"" + Namespace.CURRENT.getUriString() + "\">"
+            + "</subsystem>";
 
-    public static final String SUBSYSTEM_XML = "<subsystem xmlns=\"" + ModelConstants.NAMESPACE
+    public static final String SUBSYSTEM_XML = "<subsystem xmlns=\"" + Namespace.CURRENT.getUriString()
             + "\"><datenpumpe host=\"host\" port=\"123\" jndi-name=\"java:jboss/dp/Default\" />\n"
             + "\t<sender host=\"host2\" port=\"22\" jndi-name=\"java:jboss/sender/Default\" />" + "</subsystem>";
 
@@ -44,7 +39,7 @@ public class SubsystemParsingTestCase extends AbstractSubsystemTest {
     public void testParseSubsystem() throws Exception {
         // Parse the subsystem xml into operations
         List<ModelNode> operations = super.parse(SUBSYSTEM_XML_ONLY);
-
+        System.out.println(SUBSYSTEM_XML);
         // /Check that we have the expected number of operations
         Assert.assertEquals(1, operations.size());
 

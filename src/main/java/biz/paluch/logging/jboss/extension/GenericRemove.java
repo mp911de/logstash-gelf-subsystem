@@ -12,10 +12,10 @@ import org.jboss.msc.service.ServiceName;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 29.07.14 20:51
  */
-public class DatenpumpeRemove extends AbstractRemoveStepHandler {
-    public static final DatenpumpeRemove INSTANCE = new DatenpumpeRemove();
+public class GenericRemove extends AbstractRemoveStepHandler {
+    public static final GenericRemove INSTANCE = new GenericRemove();
 
-    private DatenpumpeRemove() {
+    private GenericRemove() {
     }
 
     @Override

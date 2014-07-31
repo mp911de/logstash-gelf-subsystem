@@ -1,6 +1,6 @@
 <module xmlns="urn:jboss:module:1.0" name="biz.paluch.logging.logstash-gelf-jboss-subsystem">
     <resources>
-        <resource-root path="logstash-gelf-jboss-subsystem.jar"/>
+        <resource-root path="logstash-gelf-jboss-subsystem-${project.version}.jar" />
     </resources>
     
     <dependencies>

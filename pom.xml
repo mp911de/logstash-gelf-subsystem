@@ -3,30 +3,50 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- parent>
-        <groupId>org.jboss.as</groupId>
-        <artifactId>jboss-as-parent</artifactId>
-    </parent -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
 
     <groupId>biz.paluch.logging</groupId>
     <artifactId>logstash-gelf-jboss-subsystem</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <name>JBoss Application Server: Subsystem Artifact</name>
-
     <packaging>jar</packaging>
+    <name>JBoss Application Server: logstash-gelf-jboss-subsystem Artifact</name>
+
+    <url>https://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
+    <inceptionYear>2014</inceptionYear>
+
+    <scm>
+        <connection>scm:git://github.com/mp911de/logstash-gelf-jboss-subsystem.git</connection>
+        <developerConnection>scm:git:git@github.com:mp911de/logstash-gelf-jboss-subsystem.git</developerConnection>
+        <url>http://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/mp911de/logstash-gelf-jboss-subsystem/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <version.jboss.as>7.1.1.Final</version.jboss.as>
         <version.junit>4.8.2</version.junit>
         <module.name>biz.paluch.logging.logstash-gelf-jboss-subsystem</module.name>
+        <logstash-gelf.version>1.5.2-SNAPSHOT</logstash-gelf.version>
     </properties>
 
 
     <build>
-        <!-- Maven will append the version to the finalName (which is the name
-           given to the generated war, and hence the context root) -->
-        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -44,12 +64,6 @@
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <enableAssertions>true</enableAssertions>
                     <argLine>-Xmx512m</argLine>
-                    <systemProperties>
-                        <property>
-                            <name>jboss.home</name>
-                            <value>${jboss.home}</value>
-                        </property>
-                    </systemProperties>
                     <includes>
                         <include>**/*TestCase.java</include>
                     </includes>
@@ -59,47 +73,42 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2.1</version>
-                <configuration>
-                    <filters>
-                        <filter>src/assemble/filter.properties</filter>
-                    </filters>
-                    <descriptors>
-                        <descriptor>src/assemble/distribution.xml</descriptor>
-                    </descriptors>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <inherited>false</inherited>
-                <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>build-dist</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
+                        <id>dist-assembly</id>
                         <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    <attach>true</attach>
+                    <classifier>module</classifier>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-provisioning-api</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
                         <configuration>
-                            <target>
-                                <!-- Replace the '.' in ${module.name} with '/' to get its path  -->
-                                <tempfile property="temp.file" />
-                                <echo message="${module.name}" file="${temp.file}" />
-                                <replace file="${temp.file}" token="." value="/" />
-                                <loadfile srcfile="${temp.file}" property="module.path" />
-                                <delete file="${temp.file}" />
-
-                                <delete dir="target/module" />
-                                <property name="module.dir" value="target/module/${module.path}/main" />
-
-                                <copy file="src/main/resources/module/main/module.xml"
-                                      tofile="${module.dir}/module.xml" />
-                                <copy file="target/${project.artifactId}.jar" todir="${module.dir}" />
-
-                                <echo>Module ${module.name} has been created in the target/module directory. Copy to
-                                    your JBoss AS 7 installation.
-                                </echo>
-                            </target>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>biz.paluch.logging</groupId>
+                                    <artifactId>logstash-gelf</artifactId>
+                                    <type>zip</type>
+                                    <classifier>logging-module</classifier>
+                                    <outputDirectory>${basedir}/target/logstash-gelf</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
                         </configuration>
                     </execution>
                 </executions>
@@ -158,7 +167,7 @@
             <version>1.2.0.Final</version>
         </dependency>
         <dependency>
-        <groupId>org.jboss.as</groupId>
+            <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-subsystem-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -170,8 +179,16 @@
         <dependency>
             <groupId>biz.paluch.logging</groupId>
             <artifactId>logstash-gelf</artifactId>
-            <version>1.5.1</version>
+            <version>${logstash-gelf.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>biz.paluch.logging</groupId>
+            <artifactId>logstash-gelf</artifactId>
+            <version>${logstash-gelf.version}</version>
+            <type>zip</type>
+            <scope>provided</scope>
+            <classifier>logging-module</classifier>
         </dependency>
     </dependencies>
 </project>

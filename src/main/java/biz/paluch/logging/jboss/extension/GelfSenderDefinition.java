@@ -9,24 +9,24 @@ import org.jboss.as.controller.registry.ManagementResourceRegistration;
  * @author <a href="mailto:mpaluch@paluch.biz">Mark Paluch</a>
  * @since 29.07.14 20:42
  */
-public class DatenpumpeDefinition extends SimpleResourceDefinition {
+public class GelfSenderDefinition extends SimpleResourceDefinition {
 
-    static final DatenpumpeDefinition INSTANCE = new DatenpumpeDefinition();
+    static final GelfSenderDefinition INSTANCE = new GelfSenderDefinition();
 
     private static final AttributeDefinition[] ATTRIBUTES = { Attributes.JNDI_NAME, Attributes.HOST, Attributes.PORT };
 
-    private DatenpumpeDefinition() {
-        super(PathElement.pathElement(ModelConstants.DATENPUMPE), SubsystemExtension
-                .getResourceDescriptionResolver(ModelConstants.DATENPUMPE),
+    private GelfSenderDefinition() {
+        super(PathElement.pathElement(ModelConstants.SENDER), SubsystemExtension
+                .getResourceDescriptionResolver(ModelConstants.SENDER),
         // We always need to add an 'add' operation
-                DatenpumpeAdd.INSTANCE,
+                GelfSenderAdd.INSTANCE,
                 // Every resource that is added, normally needs a remove operation
                 GenericRemove.INSTANCE);
     }
 
     @Override
     public void registerAttributes(ManagementResourceRegistration resourceRegistration) {
-        DatenpumpeWriteAttributeHandler handler = new DatenpumpeWriteAttributeHandler(ATTRIBUTES);
+        GelfSenderWriteAttributeHandler handler = new GelfSenderWriteAttributeHandler(ATTRIBUTES);
         for (AttributeDefinition attribute : ATTRIBUTES) {
             resourceRegistration.registerReadWriteAttribute(attribute, null, handler);
         }

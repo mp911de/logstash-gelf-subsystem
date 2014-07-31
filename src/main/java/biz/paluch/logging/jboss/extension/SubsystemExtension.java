@@ -4,12 +4,6 @@ import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.ADD
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.OP_ADDR;
 import static org.jboss.as.controller.descriptions.ModelDescriptionConstants.SUBSYSTEM;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.jboss.as.controller.Extension;
 import org.jboss.as.controller.ExtensionContext;
 import org.jboss.as.controller.PathElement;
@@ -22,6 +16,10 @@ import org.jboss.as.controller.registry.ManagementResourceRegistration;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.ServiceName;
 import org.jboss.staxmapper.XMLExtendedStreamReader;
+
+import javax.xml.stream.XMLStreamException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
@@ -45,19 +43,16 @@ public class SubsystemExtension implements Extension {
 
     @Override
     public void initializeParsers(ExtensionParsingContext context) {
-        context.setSubsystemXmlMapping(ModelConstants.SUBSYSTEM_NAME, ModelConstants.NAMESPACE, parser);
+        context.setSubsystemXmlMapping(ModelConstants.SUBSYSTEM_NAME, Namespace.CURRENT.getUriString(), parser);
     }
 
     @Override
     public void initialize(ExtensionContext context) {
         final SubsystemRegistration subsystem = context.registerSubsystem(ModelConstants.SUBSYSTEM_NAME, 1, 0);
         final ManagementResourceRegistration registration = subsystem.registerSubsystemModel(SubsystemDefinition.INSTANCE);
-        /*
-         * registration.registerOperationHandler(DESCRIBE, GenericSubsystemDescribeHandler.INSTANCE,
-         * GenericSubsystemDescribeHandler.INSTANCE, false, OperationEntry.EntryType.PRIVATE);
-         */
 
         registration.registerSubModel(DatenpumpeDefinition.INSTANCE);
+        registration.registerSubModel(GelfSenderDefinition.INSTANCE);
 
         subsystem.registerXMLElementWriter(parser);
     }
@@ -76,7 +71,7 @@ public class SubsystemExtension implements Extension {
         return subsystem;
     }
 
-    public static void prepareDatenpumpe(final XMLExtendedStreamReader reader, List<ModelNode> list, ModelNode parent)
+    public static void prepareOperation(String address, XMLExtendedStreamReader reader, List<ModelNode> list, ModelNode parent)
             throws XMLStreamException {
         String jndiName = null;
         final ModelNode operation = new ModelNode();
@@ -102,7 +97,7 @@ public class SubsystemExtension implements Extension {
         }
 
         final ModelNode dsAddress = parent.clone();
-        dsAddress.add(ModelConstants.DATENPUMPE, jndiName);
+        dsAddress.add(address, jndiName);
         dsAddress.protect();
 
         operation.get(OP_ADDR).set(dsAddress);

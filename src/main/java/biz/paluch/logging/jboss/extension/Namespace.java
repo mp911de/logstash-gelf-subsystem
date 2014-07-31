@@ -10,7 +10,7 @@ enum Namespace {
     // must be first
     UNKNOWN(null),
 
-    LOGSTASH_GELF_1_0("urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0");
+    LOGSTASH_GELF_1_0("urn:biz.paluch.logging:" + ModelConstants.SUBSYSTEM_NAME + ":1.0");
 
     /**
      * The current namespace version.
@@ -38,7 +38,9 @@ enum Namespace {
         final Map<String, Namespace> map = new HashMap<String, Namespace>();
         for (Namespace namespace : values()) {
             final String name = namespace.getUriString();
-            if (name != null) { map.put(name, namespace); }
+            if (name != null) {
+                map.put(name, namespace);
+            }
         }
         MAP = map;
     }
