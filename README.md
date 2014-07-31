@@ -1,7 +1,7 @@
 logstash-gelf-jboss-subsystem
 =========================
 
-[![Build Status](https://api.travis-ci.org/mp911de/logstash-gelf-jboss-subsystem.svg)](https://travis-ci.org/mp911de/logstash-gelf-jboss-subsystem)[![Maven Central](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem/badge.svg)](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem)
+[![Build Status](https://api.travis-ci.org/mp911de/logstash-gelf-jboss-subsystem.svg)](https://travis-ci.org/mp911de/logstash-gelf-jboss-subsystem) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem/badge.svg)](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem)
 
 This is a JBossAS7 subsystem module to provide injection/JNDI bindings of `GelfSender` and `Datenpumpe` instances. 
 
@@ -78,11 +78,11 @@ public class ShoppingCart{
 This results in a Gelf message like:
 
 ```json
-    { "timestamp": "1406797244.645",
-      "facility": "logstash-gelf", 
-      "_cartId": "the cart id", 
-      "_amount": 9.27,
-      "_customerId": "the customer id" }
+{ "timestamp": "1406797244.645",
+  "facility": "logstash-gelf", 
+  "_cartId": "the cart id", 
+  "_amount": 9.27,
+  "_customerId": "the customer id" }
 ```
 
 How to get
@@ -139,17 +139,17 @@ Adding a new GelfSender:
 Adding a new Datenpumpe:
 
 ```xml
-    <subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
-        <datenpumpe host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/datenpumpe" />
-    </subsystem>
+<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
+    <datenpumpe host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/datenpumpe" />
+</subsystem>
 ```
 
 Adding a new GelfSender:
 
 ```xml
-    <subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
-        <sender host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/sender" />
-    </subsystem>
+<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
+    <sender host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/sender" />
+</subsystem>
 ```
 
 Properties
