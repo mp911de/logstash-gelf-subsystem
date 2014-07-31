@@ -9,7 +9,7 @@ This is a JBossAS7 subsystem module to provide injection/JNDI bindings of `GelfS
 But wait: What is Datenpumpe?
 --------------
 
-**TL;DR; Datenpumpe allows you to submit your own data structures to be processed by logstash, ElasticSearch and Kibana (the ELK stack).** 
+**TL;DR;** Datenpumpe allows you to submit your own data structures to be processed by logstash, ElasticSearch and Kibana (the ELK stack) 
 
 
 And the longer version:
@@ -29,9 +29,8 @@ public class MyServlet extends HttpServlet {
     public Datenpumpe datenpumpe;
     
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)  {
         
-       
         Map<String, Object> message = new HashMap<>;
         message.put("uri", req.getRequestUri());
         message.put("resource", "MyServlet");
@@ -51,19 +50,19 @@ public class MyEjb {
     @Resource(mappedName = "jndi:/jboss/datenpumpe")
     public Datenpumpe datenpumpe;
     
-    protected void shoppingCartOrdered(ShoppingCart cart) {
+    public void shoppingCartOrdered(ShoppingCart cart) {
         datenpumpe.submit(cart);
     }
 }
 
 public class ShoppingCart{
 
-    private String id;
+    private String cartId;
     private double amount;
     private String customerId;
     
-    public String getId(){
-        return id;
+    public String getCartId(){
+        return cartId;
     }
     
     public double getAmount(){
@@ -76,6 +75,15 @@ public class ShoppingCart{
 }
 ```
 
+This results in a Gelf message like:
+
+```json
+    { "timestamp": "1406797244.645",
+      "facility": "logstash-gelf", 
+      "_cartId": "the cart id", 
+      "_amount": 9.27,
+      "_customerId": "the customer id" }
+```
 
 How to get
 --------------
