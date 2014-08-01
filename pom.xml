@@ -10,23 +10,24 @@
     </parent>
 
     <groupId>biz.paluch.logging</groupId>
-    <artifactId>logstash-gelf-jboss-subsystem</artifactId>
+    <artifactId>logstash-gelf-subsystem</artifactId>
     <version>8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Wildfly Application Server: logstash-gelf-jboss-subsystem Artifact</name>
+    <name>Wildfly Application Server: logstash-gelf-subsystem Artifact</name>
 
-    <url>https://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
+    <url>https://github.com/mp911de/logstash-gelf-subsystem/</url>
     <inceptionYear>2014</inceptionYear>
 
     <scm>
-        <connection>scm:git://github.com/mp911de/logstash-gelf-jboss-subsystem.git</connection>
-        <developerConnection>scm:git:git@github.com:mp911de/logstash-gelf-jboss-subsystem.git</developerConnection>
-        <url>http://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
+        <connection>scm:git://github.com/mp911de/logstash-gelf-subsystem.git</connection>
+        <developerConnection>scm:git:git@github.com:mp911de/logstash-gelf-subsystem.git</developerConnection>
+        <url>http://github.com/mp911de/logstash-gelf-subsystem/</url>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/mp911de/logstash-gelf-jboss-subsystem/issues</url>
+        <url>https://github.com/mp911de/logstash-gelf-subsystem/issues</url>
     </issueManagement>
 
     <licenses>
@@ -41,7 +42,7 @@
         <version.jboss.as>8.1.0.Final</version.jboss.as>
         <version.org.wildfly.core>1.0.0.Alpha3</version.org.wildfly.core>
         <version.junit>4.8.2</version.junit>
-        <module.name>biz.paluch.logging.logstash-gelf-jboss-subsystem</module.name>
+        <module.name>biz.paluch.logging.logstash-gelf-subsystem</module.name>
         <logstash-gelf.version>1.5.2-SNAPSHOT</logstash-gelf.version>
     </properties>
 

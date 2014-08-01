@@ -9,7 +9,7 @@ public interface ModelConstants {
     /**
      * The name of our subsystem within the model.
      */
-    public static final String SUBSYSTEM_NAME = "logstash-gelf-jboss-subsystem";
+    public static final String SUBSYSTEM_NAME = "logstash-gelf-subsystem";
     public static final String DATENPUMPE = "datenpumpe";
     public static final String SENDER = "sender";
 

@@ -11,9 +11,9 @@
     <fileSets>
         <fileSet>
             <directory>${project.build.directory}</directory>
-            <outputDirectory>/biz/paluch/logging/logstash-gelf-jboss-subsystem/main</outputDirectory>
+            <outputDirectory>/biz/paluch/logging/logstash-gelf-subsystem/main</outputDirectory>
             <includes>
-                <include>logstash-gelf-jboss-subsystem*.jar</include>
+                <include>logstash-gelf-subsystem*.jar</include>
             </includes>
             <excludes>
                 <exclude>*sources*</exclude>
@@ -34,7 +34,7 @@
         <file>
             <source>src/main/assembly/module.xml</source>
             <filtered>true</filtered>
-            <outputDirectory>/biz/paluch/logging/logstash-gelf-jboss-subsystem/main</outputDirectory>
+            <outputDirectory>/biz/paluch/logging/logstash-gelf-subsystem/main</outputDirectory>
         </file>
     </files>
 </assembly>
