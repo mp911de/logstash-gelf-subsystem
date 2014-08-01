@@ -11,7 +11,7 @@
 
     <groupId>biz.paluch.logging</groupId>
     <artifactId>logstash-gelf-jboss-subsystem</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>7.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JBoss Application Server: logstash-gelf-jboss-subsystem Artifact</name>
 

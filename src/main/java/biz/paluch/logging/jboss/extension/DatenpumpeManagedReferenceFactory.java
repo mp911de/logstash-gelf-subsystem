@@ -30,7 +30,7 @@ public class DatenpumpeManagedReferenceFactory implements ManagedReferenceFactor
         return new ValueManagedReference(new ImmediateValue<Object>(datenpumpe)) {
             @Override
             public void release() {
-                // datenpumpe.close();
+                datenpumpe.close();
             }
         };
     }
