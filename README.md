@@ -90,7 +90,11 @@ How to get
 
 JBoss AS7 and Wildfly modules are not binary compatible, therefore you need to download the right library. 
 
-Maven Repo: http://oss.sonatype.org/content/repositories/snapshots/
+* Maven Repo: http://oss.sonatype.org/content/repositories/snapshots/
+* https://github.com/mp911de/logstash-gelf-subsystem/releases/tag/First-Snapshot
+* JBoss AS7: https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/7.0-SNAPSHOT/logstash-gelf-subsystem-7.0-20140801.182946-1-module.zip
+* WildFly (AS8): https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/8.0-SNAPSHOT/logstash-gelf-subsystem-8.0-20140801.184502-1-module.zip    
+* or via Maven:
 
 JBoss AS7 Module Download:
 
@@ -101,7 +105,6 @@ JBoss AS7 Module Download:
         <classifier>module</classifier>
     </dependency>
 
-https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/7.0-SNAPSHOT/logstash-gelf-subsystem-7.0-20140801.182946-1-module.zip
 
 Wildfly (AS8) Module Download:
 
@@ -112,7 +115,6 @@ Wildfly (AS8) Module Download:
         <classifier>module</classifier>
     </dependency>
     
-https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/8.0-SNAPSHOT/logstash-gelf-subsystem-8.0-20140801.184502-1-module.zip    
     
 
 How to install
