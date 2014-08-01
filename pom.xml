@@ -11,9 +11,9 @@
 
     <groupId>biz.paluch.logging</groupId>
     <artifactId>logstash-gelf-jboss-subsystem</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>JBoss Application Server: logstash-gelf-jboss-subsystem Artifact</name>
+    <name>Wildfly Application Server: logstash-gelf-jboss-subsystem Artifact</name>
 
     <url>https://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
     <inceptionYear>2014</inceptionYear>
@@ -22,7 +22,6 @@
         <connection>scm:git://github.com/mp911de/logstash-gelf-jboss-subsystem.git</connection>
         <developerConnection>scm:git:git@github.com:mp911de/logstash-gelf-jboss-subsystem.git</developerConnection>
         <url>http://github.com/mp911de/logstash-gelf-jboss-subsystem/</url>
-        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
@@ -39,7 +38,8 @@
     </licenses>
 
     <properties>
-        <version.jboss.as>7.1.1.Final</version.jboss.as>
+        <version.jboss.as>8.1.0.Final</version.jboss.as>
+        <version.org.wildfly.core>1.0.0.Alpha3</version.org.wildfly.core>
         <version.junit>4.8.2</version.junit>
         <module.name>biz.paluch.logging.logstash-gelf-jboss-subsystem</module.name>
         <logstash-gelf.version>1.5.2-SNAPSHOT</logstash-gelf.version>
@@ -119,24 +119,25 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-controller</artifactId>
+                <groupId>org.wildfly.core</groupId>
+                <artifactId>wildfly-controller</artifactId>
+                <version>${version.org.wildfly.core}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly.core</groupId>
+                <artifactId>wildfly-server</artifactId>
+                <version>${version.org.wildfly.core}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-naming</artifactId>
                 <version>${version.jboss.as}</version>
             </dependency>
             <dependency>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-server</artifactId>
-                <version>${version.jboss.as}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-naming</artifactId>
-                <version>${version.jboss.as}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.as</groupId>
-                <artifactId>jboss-as-subsystem-test</artifactId>
-                <version>${version.jboss.as}</version>
+                <groupId>org.wildfly.core</groupId>
+                <artifactId>wildfly-subsystem-test</artifactId>
+                <version>${version.org.wildfly.core}</version>
+                <type>pom</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -150,16 +151,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-controller</artifactId>
+            <groupId>org.wildfly.core</groupId>
+            <artifactId>wildfly-controller</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-server</artifactId>
+            <groupId>org.wildfly.core</groupId>
+            <artifactId>wildfly-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-naming</artifactId>
+            <groupId>org.wildfly</groupId>
+            <artifactId>wildfly-naming</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.logging</groupId>
@@ -167,8 +168,9 @@
             <version>1.2.0.Final</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-subsystem-test</artifactId>
+            <groupId>org.wildfly.core</groupId>
+            <artifactId>wildfly-subsystem-test</artifactId>
+            <type>pom</type>
             <scope>test</scope>
         </dependency>
         <dependency>
