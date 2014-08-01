@@ -1,9 +1,9 @@
-logstash-gelf-jboss-subsystem
+logstash-gelf-subsystem
 =========================
 
-[![Build Status](https://api.travis-ci.org/mp911de/logstash-gelf-jboss-subsystem.svg)](https://travis-ci.org/mp911de/logstash-gelf-jboss-subsystem) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem/badge.svg)](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-jboss-subsystem)
+[![Build Status](https://api.travis-ci.org/mp911de/logstash-gelf-subsystem.svg)](https://travis-ci.org/mp911de/logstash-gelf-subsystem) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-subsystem/badge.svg)](https://maven-badges.herokuapp.com/maven-central/biz.paluch.logging/logstash-gelf-subsystem)
 
-This is a JBossAS7 subsystem module to provide injection/JNDI bindings of `GelfSender` and `Datenpumpe` instances. 
+This is a JBossAS7/Wildfly subsystem module to provide injection/JNDI bindings of `GelfSender` and `Datenpumpe` instances. 
 
 
 But wait: What is Datenpumpe?
@@ -88,21 +88,34 @@ This results in a Gelf message like:
 How to get
 --------------
 
-JBoss Module Download:
+JBoss AS7 and Wildfly modules are not binary compatible, therefore you need to download the right library. 
+
+Maven Repo: http://oss.sonatype.org/content/repositories/snapshots/
+
+JBoss AS7 Module Download:
 
     <dependency>
         <groupId>biz.paluch.logging</groupId>
-        <artifactId>logstash-gelf-jboss-subsystem</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>logstash-gelf-subsystem</artifactId>
+        <version>7.0.0-SNAPSHOT</version>
         <classifier>module</classifier>
     </dependency>
 
-or http://search.maven.org/remotecontent?filepath=biz/paluch/logging/logstash-gelf-jboss-subsystem/1.0.0/logstash-gelf-jboss-subsystem-1.0.0-module.zip
+https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/7.0-SNAPSHOT/logstash-gelf-subsystem-7.0-20140801.182946-1-module.zip
+
+Wildfly (AS8) Module Download:
+
+    <dependency>
+        <groupId>biz.paluch.logging</groupId>
+        <artifactId>logstash-gelf-subsystem</artifactId>
+        <version>8.0.0-SNAPSHOT</version>
+        <classifier>module</classifier>
+    </dependency>
 
 How to install
 --------------
 
-Download the zipped module and drop the contents of the zip-file (without the top-level directory logstash-gelf-jboss-subsystem-(version)) 
+Download the zipped module and drop the contents of the zip-file (without the top-level directory logstash-gelf-subsystem-(version)) 
 into your JBoss' module directory (either below modules/system/layers/base, a new layer or below modules/ directly). The module zip contains also the
 dependency to logstash-gelf, so you don't need to download it separately.
 
@@ -113,12 +126,12 @@ Add following lines to your JBoss config
 In the `extensions` section (below server/extensions): 
 
 ```xml
-    <extension module="biz.paluch.logging.logstash-gelf-jboss-subsystem"/>
+    <extension module="biz.paluch.logging.logstash-gelf-subsystem"/>
 ```
 
 And anywhere in the `profile` secion (below server/profile):
 ```xml
-    <subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
+    <subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-subsystem:1.0">
     </subsystem>
 ```
 
@@ -128,18 +141,18 @@ Afterwards you can add Datenpumpe or GelfSender instances.
 --------------
 Adding a new Datenpumpe:
 
-    /subsystem=logstash-gelf-jboss-subsystem/datenpumpe="jndi:/jboss/datenpumpe"/:add(jndi-name="jndi:/jboss/datenpumpe", host="udp:logstash-host", port=12201)
+    /subsystem=logstash-gelf-subsystem/datenpumpe="jndi:/jboss/datenpumpe"/:add(jndi-name="jndi:/jboss/datenpumpe", host="udp:logstash-host", port=12201)
 
 Adding a new GelfSender:
 
-    /subsystem=logstash-gelf-jboss-subsystem/sender="jndi:/jboss/sender"/:add(jndi-name="jndi:/jboss/sender", host="udp:logstash-host", port=12201)
+    /subsystem=logstash-gelf-subsystem/sender="jndi:/jboss/sender"/:add(jndi-name="jndi:/jboss/sender", host="udp:logstash-host", port=12201)
 
 <a name="xml"/>XML Configuration
 --------------
 Adding a new Datenpumpe:
 
 ```xml
-<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
+<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-subsystem:1.0">
     <datenpumpe host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/datenpumpe" />
 </subsystem>
 ```
@@ -147,7 +160,7 @@ Adding a new Datenpumpe:
 Adding a new GelfSender:
 
 ```xml
-<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0">
+<subsystem xmlns="urn:biz.paluch.logging:logstash-gelf-subsystem:1.0">
     <sender host="udp:logstash-host" port="12201" jndi-name="jndi:/jboss/sender" />
 </subsystem>
 ```
