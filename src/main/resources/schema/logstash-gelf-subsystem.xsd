@@ -1,6 +1,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0"
-           xmlns="urn:biz.paluch.logging:logstash-gelf-jboss-subsystem:1.0"
+           targetNamespace="urn:biz.paluch.logging:logstash-gelf-subsystem:1.0"
+           xmlns="urn:biz.paluch.logging:logstash-gelf-subsystem:1.0"
            elementFormDefault="qualified"
            attributeFormDefault="unqualified"
            version="1.0">

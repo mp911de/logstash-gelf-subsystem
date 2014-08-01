@@ -111,6 +111,9 @@ Wildfly (AS8) Module Download:
         <version>8.0.0-SNAPSHOT</version>
         <classifier>module</classifier>
     </dependency>
+    
+https://oss.sonatype.org/content/repositories/snapshots/biz/paluch/logging/logstash-gelf-subsystem/8.0-SNAPSHOT/logstash-gelf-subsystem-8.0-20140801.184502-1-module.zip    
+    
 
 How to install
 --------------
